@@ -31,6 +31,7 @@ var UserSchema = new mongoose.Schema(
     },
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    isVerified: { type: Boolean, default: false },
     hash: String,
     salt: String
   },
