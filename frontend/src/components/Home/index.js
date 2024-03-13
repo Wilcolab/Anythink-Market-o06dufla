@@ -1,6 +1,6 @@
 import Banner from "./Banner";
 import MainView from "./MainView";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Tags from "./Tags";
 import agent from "../../agent";
 import { connect } from "react-redux";
@@ -26,23 +26,9 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: HOME_PAGE_UNLOADED }),
 });
 
-const getAllItems = () => agent.Items.all;
-const getItemsByTitle = (title) => agent.Items.byTitle(title);
-
 const Home = ({onLoad, onUnload, tags, onClickTag}) => {
   const tab = "all";
-  const [itemsPromise, setItemsPromise] = useState(getAllItems);
-  const [searchText, setSearchText] = useState('');
-
-  const onSearchTextChange = (searchText) => {
-    if (searchText.length >= 3) {
-      setSearchText(searchText);
-      setItemsPromise(() => () => getItemsByTitle(searchText));
-    } else if (itemsPromise !== getAllItems) {
-      setSearchText('');
-      setItemsPromise(getAllItems);
-    }
-  }
+  const itemsPromise = agent.Items.all;
 
   useEffect(() => {
     onLoad(
@@ -55,11 +41,11 @@ const Home = ({onLoad, onUnload, tags, onClickTag}) => {
 
     return (
       <div className="home-page">
-        <Banner onSearchTextChange={onSearchTextChange} />
+        <Banner />
 
         <div className="container page">
           <Tags tags={tags} onClickTag={onClickTag} />
-          <MainView searchText={searchText} />
+          <MainView />
         </div>
       </div>
     );
