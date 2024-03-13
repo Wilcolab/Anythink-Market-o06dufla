@@ -32,11 +32,14 @@ const getItemsByTitle = (title) => agent.Items.byTitle(title);
 const Home = ({onLoad, onUnload, tags, onClickTag}) => {
   const tab = "all";
   const [itemsPromise, setItemsPromise] = useState(getAllItems);
+  const [searchText, setSearchText] = useState('');
 
   const onSearchTextChange = (searchText) => {
     if (searchText.length >= 3) {
+      setSearchText(searchText);
       setItemsPromise(() => () => getItemsByTitle(searchText));
     } else if (itemsPromise !== getAllItems) {
+      setSearchText('');
       setItemsPromise(getAllItems);
     }
   }
@@ -56,7 +59,7 @@ const Home = ({onLoad, onUnload, tags, onClickTag}) => {
 
         <div className="container page">
           <Tags tags={tags} onClickTag={onClickTag} />
-          <MainView />
+          <MainView searchText={searchText} />
         </div>
       </div>
     );
